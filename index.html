@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LKPD Digital - TKR XI SMKN Wongsorejo</title>
+  <style>
+    :root { --primary: #1b365d; --secondary: #2b6cb0; --border: #cbd5e1; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 15px; background: #f4f6f9; color: #2d3748; line-height: 1.6; }
+   .container { max-width: 800px; margin: auto; background: #fff; padding: 25px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+   .header { text-align: center; border-bottom: 3px solid var(--primary); padding-bottom: 15px; margin-bottom: 20px; }
+   .logo { width: 90px; height: 90px; object-fit: contain; margin-bottom: 8px; }
+   .header h1 { font-size: 1.3rem; color: var(--primary); margin: 5px 0; }
+   .header h2 { font-size: 1rem; color: var(--secondary); margin: 5px 0; }
+    h3 { color: var(--primary); border-left: 4px solid var(--secondary); padding-left: 10px; margin-top: 20px; font-size: 1.1rem; }
+    label { font-weight: bold; font-size: 0.9rem; display: block; margin-top: 10px; }
+    input, select, textarea { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 10px; font-size: 0.95rem; box-sizing: border-box; }
+   .btn { background: var(--secondary); color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; font-size: 1rem; margin-top: 10px; }
+   .btn:hover { background: var(--primary); }
+    #loading { display: none; text-align: center; color: var(--secondary); font-weight: bold; margin-top: 10px; }
+   .grid-anggota { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+   .info-skor { background: #e6fffa; padding: 10px; border-radius: 6px; font-size: 0.85rem; color: var(--primary); border-left: 4px solid var(--secondary); }
+    @media print {.btn, #loading { display: none; } body { background: white; }.container { box-shadow: none; }}
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <!-- LOGO SMKN WONGSOREJO -->
+    <img src="https://raw.githubusercontent.com/fikri81/presentasi-11-tkr/main/logoq.png" alt="Logo SMKN Wongsorejo" class="logo">
+    <h1>LEMBAR KERJA PESERTA DIDIK DIGITAL</h1>
+    <h2>BAHASA INGGRIS ESP - TKR | PROCEDURE TEXT: TROUBLESHOOTING</h2>
+    <h2>SMK Negeri Wongsorejo</h2>
+  </div>
+
+  <form id="lkpdForm">
+    <h3>A. DATA KELOMPOK</h3>
+    <input type="text" id="kelompok" placeholder="Nama Kelompok" required>
+
+    <label>Nama Anggota: Maks 5 orang</label>
+    <div class="grid-anggota">
+      <input type="text" id="anggota1" placeholder="Anggota 1" required>
+      <input type="text" id="anggota2" placeholder="Anggota 2">
+      <input type="text" id="anggota3" placeholder="Anggota 3">
+      <input type="text" id="anggota4" placeholder="Anggota 4">
+      <input type="text" id="anggota5" placeholder="Anggota 5">
+    </div>
+
+    <label>Kelas</label>
+    <select id="kelas" required>
+      <option value="">-- Pilih Kelas --</option>
+      <option value="XI TKR 1">XI TKR 1</option>
+      <option value="XI TKR 2">XI TKR 2</option>
+    </select>
+
+    <h3>B. PILIH KASUS TROUBLESHOOTING</h3>
+    <select id="kasus" required>
+      <option value="">-- Pilih Kasus --</option>
+      <option>The engine won't start</option>
+      <option>The brake is noisy and not working well</option>
+      <option>There is oil leaking under the motorcycle</option>
+      <option>The headlamp does not light</option>
+      <option>The gear is hard to shift</option>
+    </select>
+
+    <h3>C. LEMBAR KERJA KELOMPOK</h3>
+    <label>1. IDENTIFY THE PROBLEM</label>
+    <input type="text" id="problem" placeholder="The..." required>
+
+    <label>2. POSSIBLE CAUSE / KEMUNGKINAN PENYEBAB</label>
+    <input type="text" id="cause1" placeholder="Cause 1" required>
+    <input type="text" id="cause2" placeholder="Cause 2">
+    <input type="text" id="cause3" placeholder="Cause 3">
+
+    <label>3. TOOLS & MATERIALS NEEDED</label>
+    <textarea id="tools" rows="2" placeholder="Tools: wrench, screwdriver, spark plug..."></textarea>
+
+    <label>4. WRITE THE PROCEDURE</label>
+    <textarea id="steps" rows="5" placeholder="1. First,...&#10;2. Second,...&#10;3. Third,...&#10;4. Next,...&#10;5. Finally,...&#10;6. Safety: Always..."></textarea>
+
+    <label>5. UPLOAD BUKTI FOTO PRAKTEK</label>
+    <input type="file" id="bukti" accept="image/*" capture="camera" required>
+
+    <h3>D. PENILAIAN</h3>
+    <div class="info-skor">
+      <b>Note:</b> Skor 1-4 akan dihitung otomatis oleh sistem berdasarkan kelengkapan jawaban & penggunaan bahasa Inggris.
+    </div>
+
+    <button class="btn" type="submit">🚀 KIRIM LKPD</button>
+    <button class="btn" type="button" onclick="window.print()" style="background:#718096;">🖨️ CETAK</button>
+    <div id="loading">⏳ Mengirim ke Google Sheet... Mohon tunggu</div>
+  </form>
+</div>
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwTFc4bhEmkFnlasFCRsaGnhDPhIZ18w7LOv4aCwVsANpIM49XfeyueNwAKXRtxmtm5KA/exec";
+
+document.getElementById('lkpdForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  document.getElementById('loading').style.display = 'block';
+
+  const file = document.getElementById('bukti').files[0];
+  if(!file){
+    alert("Harap upload foto bukti praktek!");
+    document.getElementById('loading').style.display = 'none';
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = function(event) {
+    const payload = {
+      kelompok: document.getElementById('kelompok').value,
+      anggota1: document.getElementById('anggota1').value,
+      anggota2: document.getElementById('anggota2').value,
+      anggota3: document.getElementById('anggota3').value,
+      anggota4: document.getElementById('anggota4').value,
+      anggota5: document.getElementById('anggota5').value,
+      kelas: document.getElementById('kelas').value,
+      kasus: document.getElementById('kasus').value,
+      problem: document.getElementById('problem').value,
+      cause1: document.getElementById('cause1').value,
+      cause2: document.getElementById('cause2').value,
+      cause3: document.getElementById('cause3').value,
+      tools: document.getElementById('tools').value,
+      steps: document.getElementById('steps').value,
+      fotoBukti: event.target.result
+    };
+
+    fetch(SCRIPT_URL, {method:'POST', body:JSON.stringify(payload)})
+  .then(res => res.json())
+  .then(res => {
+      document.getElementById('loading').style.display = 'none';
+      if(res.result === "success"){
+        alert("✅ LKPD Berhasil Dikirim! \nSkor Otomatis: " + res.score + " / 4");
+        document.getElementById('lkpdForm').reset();
+      } else {
+        alert("❌ Gagal: " + res.message);
+      }
+    })
+  .catch(err => {
+      document.getElementById('loading').style.display = 'none';
+      alert("❌ Error Koneksi: " + err);
+    });
+  };
+  reader.readAsDataURL(file);
+});
+</script>
+</body>
+</html>
